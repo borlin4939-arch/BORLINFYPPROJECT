@@ -1,0 +1,21 @@
+[
+  {
+    "title": "Char Kway Teow",
+    "description": "A famous Penang street food made with flat rice noodles, prawns, egg, and bean sprouts, stir-fried over high heat for a smoky flavor.",
+    "link": "charkeowteoy.html",
+    "img": "charkeowteow.jpg"
+  },
+  {
+    "title": "Curry Mee",
+    "description": "A rich and spicy noodle soup with coconut milk, tofu puffs, cockles, and prawns, popular in Penang hawker stalls.",
+    "link": "currymee.html",
+    "img": "currymee.jpg"
+  },
+  {
+    "title": "Nasi Lemak",
+    "description": "Malaysia’s national dish featuring fragrant coconut rice, sambal, anchovies, peanuts, egg, and often served with fried chicken.",
+    "link": "nasilemak.html",
+    "img": "nasilemak.jpg"
+  }
+  
+]

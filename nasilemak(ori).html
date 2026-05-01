@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nasi Lemak AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+</style>
+</head>
+<body>
+
+<h1>🍛 Nasi Lemak Recommendation</h1>
+
+<div class="card">
+<label>🌶 Spicy</label>
+<select id="spicy">
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<label>🍯 Sweet</label>
+<select id="sweet">
+<option value="yes">Yes</option>
+<option value="no">No</option>
+</select>
+
+<label>🍋 Sour</label>
+<select id="sour">
+<option value="yes">Yes</option>
+<option value="no">No</option>
+</select>
+
+<label>☪️ Halal</label>
+<select id="halal">
+<option value="yes">Halal</option>
+<option value="no">Non-Halal</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+
+const foods = [
+{ name:"Ali Nasi Lemak", rating:4.5, spicy:"medium", sweet:"low", sour:"no", halal:"yes", img:"", map:"" },
+{ name:"Air Itam Nasi Lemak", rating:4.4, spicy:"high", sweet:"low", sour:"no", halal:"yes", img:"", map:"" },
+{ name:"Village Style Nasi Lemak", rating:4.3, spicy:"low", sweet:"low", sour:"yes", halal:"yes", img:"", map:"" },
+{ name:"Premium Pork Nasi Lemak", rating:4.6, spicy:"medium", sweet:"low", sour:"no", halal:"no", img:"", map:"" },
+{ name:"Fusion Nasi Lemak", rating:4.2, spicy:"high", sweet:"yes", sour:"yes", halal:"no", img:"", map:"" }
+];
+
+function generateAIText(userHalal){
+    if(userHalal === "yes"){
+        return "This nasi lemak is recommended because it matches your taste preference and strictly follows halal requirements, ensuring suitable and safe food choices.";
+    } else {
+        return "This nasi lemak is recommended because it matches your taste preference and allows a wider range of ingredients, offering richer and more diverse flavours.";
+    }
+}
+
+function recommend(){
+
+let spicy=document.getElementById("spicy").value;
+let sweet=document.getElementById("sweet").value;
+let sour=document.getElementById("sour").value;
+let halal=document.getElementById("halal").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+if(f.spicy===spicy) score+=3;
+if(sweet==="no" && f.sweet==="low") score+=2;
+if(f.sour===sour) score+=2;
+if(f.halal===halal) score+=5;
+
+score+=f.rating;
+
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let topResults = results.slice(0,5);
+
+let html = "<h2>🥇 Top 5 Recommendation</h2>";
+
+topResults.forEach((r, index) => {
+
+let aiText = generateAIText(halal);
+
+html += `
+<div class="card ${index===0 ? 'best' : ''}">
+<h3>#${index+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b> ${aiText}</p>
+<img src="${r.f.img}">
+<br><br>
+<button onclick="window.open('${r.f.map}')">View Location</button>
+</div>
+`;
+});
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Otak Otak AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍢 Otak Otak (Selangor)</h1>
+
+<label>🐟 Type</label>
+<select id="type">
+<option value="fish">🐟 Fish Only</option>
+<option value="mix">🍤 Mix</option>
+</select>
+
+<label>🌶 Spiciness</label>
+<select id="spicy">
+<option value="low">🙂 Mild</option>
+<option value="medium">😌 Medium</option>
+<option value="high">🔥 Spicy</option>
+</select>
+
+<label>🍃 Banana Leaf</label>
+<select id="leaf">
+<option value="yes">🍃 With Leaf</option>
+<option value="no">🚫 No Leaf</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+<div id="result"></div>
+
+<script>
+const foods=[
+{name:"Pembekal otak-otak dan sata", type:"mix", spicy:"high", leaf:"yes", rating:4.8, map:"https://share.google/52PoIy7znY2oDLtXv"},
+{name:"Otak-Otak Paya Jaras", type:"fish", spicy:"medium", leaf:"yes", rating:4.6, map:"https://share.google/2lAFHGO25chMfLy5n"},
+{name:"Stokis Otak Otak JB Mr.Noh Shah Alam", type:"fish", spicy:"low", leaf:"no", rating:4.4, map:"https://share.google/GZUzLvBz4aZq4OVqs"},
+{name:"Pembekal Otak-otak ROZ Kuala Selangor", type:"mix", spicy:"medium", leaf:"yes", rating:4.5, map:"https://share.google/Arpxb5KeEh5c7bfEM"},
+{name:"Otak-Otak KL", type:"mix", spicy:"high", leaf:"no", rating:4.7, map:"https://share.google/Ko2RxwkdXTAoCiIy5"}
+];
+
+function aiText(t,p,l){
+return `Recommended because it matches your preference for ${t} otak, ${p} spice level, and ${l==="yes"?"traditional banana leaf wrapping":"modern serving style"}.`;
+}
+
+function recommend(){
+let t=type.value, p=spicy.value, l=leaf.value;
+let results=[];
+
+for(let f of foods){
+let score=0;
+if(f.type===t) score+=4;
+if(f.spicy===p) score+=4;
+if(f.leaf===l) score+=3;
+score+=f.rating;
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(t,p,l)}</p>
+<button onclick="window.open('${r.f.map}')">📍 View Location</button>
+</div>`;
+});
+result.innerHTML=html;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Penang Experience AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+table { width:100%; margin-top:10px; border-collapse: collapse; }
+td, th { border:1px solid #ddd; padding:8px; text-align:center; }
+</style>
+</head>
+<body>
+
+<h1>🏙️ Penang Experience Recommendation</h1>
+
+<div class="card">
+
+<label>🎯 Experience Type</label>
+<select id="type">
+<option value="explore">Exploring</option>
+<option value="exciting">Exciting</option>
+<option value="museum">Museum</option>
+</select>
+
+<label>🌤 Environment</label>
+<select id="env">
+<option value="indoor">Indoor</option>
+<option value="outdoor">Outdoor</option>
+</select>
+
+<label>😌 Mood</label>
+<select id="mood">
+<option value="chill">Chill</option>
+<option value="hard">Hardcore</option>
+</select>
+
+<button onclick="recommend()">Get Experience</button>
+
+</div>
+
+<div id="result"></div>
+
+<script>
+
+
+const experiences = [
+{ name:"Entopia", type:"explore", env:"indoor", mood:"chill", price:65 ,link:"https://www.entopia.com/",img:"entopia.png",map:"https://share.google/5yOzbUvZ5Ag23UMMy"},
+{ name:"Penang Escape", type:"exciting", env:"outdoor", mood:"hard", price:120,link:"https://escape-pg.thecoolmelon.com/",img:"escapepenang.png" ,map:"https://share.google/5ukPBg8McQT5glqEv"},
+{ name:"Ghost Museum", type:"museum", env:"indoor", mood:"hard", price:40 ,link:"https://www.instagram.com/ghostmuseumpenang/",img:"pngshostmusuem.png",map:"https://share.google/HWcFtGoyNOz6foHvi"},
+{ name:"Toy Museum", type:"museum", env:"indoor", mood:"chill", price:35 ,link:"https://www.instagram.com/explore/locations/635833/toy-museum-penang/",img:"toymusuem.png",map:"https://share.google/WcKhnVAXzHyKa4tm7"},
+{ name:"First Avenue Skating", type:"exciting", env:"indoor", mood:"hard", price:50 ,link:"https://www.rollerka.net/",img:"penangskating.png",map:"https://share.google/7AGqt3hxcnMyChLeX"},
+{ name:"Penang Bird Park", type:"explore", env:"outdoor", mood:"chill", price:45 ,link:"https://www.penangbirdpark.com.my/",img:"penangbirdpark.png",map:"https://share.google/jKch9kxWx8C5qozlo"},
+{ name:"Batu Ferringhi Parasailing", type:"exciting", env:"outdoor", mood:"hard", price:150 ,link:"https://www.ferringhiseasports.com.my/product/parasailing-2/",img:"batuferinghipara.png",map:"https://share.google/wnK56aokHFThnIO7P"}
+];
+
+
+function generateAIText(mood){
+    if(mood === "hard"){
+        return "This experience is recommended because it provides a more thrilling and high-energy activity suitable for adventure seekers.";
+    } else {
+        return "This experience is recommended because it offers a relaxing and enjoyable environment suitable for a chill outing.";
+    }
+}
+
+
+function recommend(){
+
+let type=document.getElementById("type").value;
+let env=document.getElementById("env").value;
+let mood=document.getElementById("mood").value;
+
+let results=[];
+
+for(let e of experiences){
+
+let score=0;
+
+
+if(e.type === type) score += 8;
+
+
+if(e.env === env) score += 5;
+
+if(e.mood === mood) score += 10;
+
+score += (200 - e.price) * 0.05
+
+results.push({e, score});
+}
+
+
+results.sort((a,b)=>b.score-a.score);
+
+
+let best = results[0];
+
+
+let html = `
+<div class="card best">
+<h2>🥇 Best Experience</h2>
+<p>${best.e.name}</p>
+<p>Price: RM ${best.e.price}</p>
+<p><b>AI Suggestion:</b> ${generateAIText(mood)}</p>
+<button class="card best" onclick="window.open('${best.e.link}')">Go to official webiste</button>
+<button class="card best" onclick="window.open('${best.e.map}')">Google Map</button>
+<img src="${best.e.img}" alt="">
+</div>
+`;
+
+
+html += `
+<div class="card">
+<h3>💰 Experience Comparison</h3>
+<table>
+<tr><th>Place</th><th>Type</th><th>Environment</th><th>Price</th></tr>
+`;
+
+results.forEach(r=>{
+html += `<tr>
+<td>${r.e.name}</td>
+<td>${r.e.type}</td>
+<td>${r.e.env}</td>
+<td>RM ${r.e.price}</td>
+</tr>`;
+});
+
+html += `</table></div>`;
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
