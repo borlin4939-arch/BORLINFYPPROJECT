@@ -1,0 +1,19 @@
+[
+   {
+     "title": "Ikan Bakar",
+    "description": "a popular Indonesian and Malaysian dish of charcoal-grilled fish or seafood, marinated in spices and frequently covered in banana leaf",
+    "link": "ikanbakar.html",
+    "img": "ikanbakar.jpg"
+  },
+  { "title": "Shellout",
+    "description": "Shellout is a popular Malaysian dining concept featuring a 'cutlery-free' seafood feast poured directly onto a plastic-lined table, encouraging hands-on eating",
+    "link":"shellout.html",
+    "img": "shellout.jpg"
+  },
+  {
+     "title": "Satay",
+    "description": "Satay is a popular Southeast Asian dish consisting of small, seasoned pieces of meat (commonly chicken, beef, or mutton) threaded onto skewers and grilled over a charcoal fire.",
+    "link": "satay.html",
+    "img": "satay.jpg"
+  }
+]

@@ -1,0 +1,20 @@
+[
+    {
+    "title": "Bihun Sup Ikan Masin",
+    "description": "A comforting noodle soup made with rice vermicelli and salted fish, giving it a unique savory and slightly salty taste.",
+    "link": "bihunsupikanmasin.html",
+    "img": "bihunikanmasin.jpg"
+  },
+  {
+    "title": "Ayam Masak garam",
+    "description": "An Ipoh chicken cooked with herbs and cooked inside of salt.",
+    "link": "ayammasakgaram.html",
+    "img": "ayammasakgaram.jpg"
+  },
+  {
+   "title": "Kopitiam Kopi Putih",
+   "description": "A Flavorful coffee that invneted by ipohrean brew with arabica coffee bean and milk.",
+    "link": "kopitiamkopiputih.html",
+    "img": "whitekopi.jpg"
+  }
+]

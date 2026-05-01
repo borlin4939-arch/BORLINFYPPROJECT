@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ramly Burger AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍔 Ramly Burger (Johor)</h1>
+
+<label>🥩 Patty Type</label>
+<select id="patty">
+<option value="ramly">Ramly Patty</option>
+<option value="homemade">Homemade Patty</option>
+</select>
+
+<label>🌙 Time</label>
+<select id="time">
+<option value="evening">🌆 Evening</option>
+<option value="midnight">🌃 Midnight</option>
+</select>
+
+<label>☪️ Halal</label>
+<select id="halal">
+<option value="yes">Halal</option>
+<option value="no">Non-Halal</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+
+const foods=[
+{name:"Ramly Azan Burger", patty:"ramly", time:"midnight", halal:"yes", rating:4.7, map:"https://share.google/btcmNXUu6oJAe5R8W"},
+{name:"RAMLY BURGER BBU", patty:"homemade", time:"evening", halal:"yes", rating:4.5, map:"https://share.google/NrUeDxIdI3OMITd9f"},
+{name:"Ramly Halal Mart", patty:"ramly", time:"evening", halal:"no", rating:4.3, map:"https://share.google/u0F97UVEb5a6UjhfN"},
+{name:"Hardrock Burger Corner (Ramly Burger)", patty:"ramly", time:"midnight", halal:"yes", rating:4.6, map:"https://share.google/Oyc1uAsUuKCHySQWk"},
+{name:"Muhammad Burger Shop Ramly Burger", patty:"homemade", time:"evening", halal:"no", rating:4.8, map:"https://share.google/Oyc1uAsUuKCHySQWk"}
+];
+
+function aiText(p,t,h){
+let txt="Recommended because it matches your preference for ";
+txt+=`${p} patty, available during ${t}, `;
+txt+=h==="yes"?"and follows halal requirements.":"and allows wider ingredient options.";
+return txt;
+}
+
+function recommend(){
+
+let p=document.getElementById("patty").value;
+let t=document.getElementById("time").value;
+let h=document.getElementById("halal").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+if(f.patty===p) score+=4;
+if(f.time===t) score+=3;
+if(f.halal===h) score+=5;
+
+score+=f.rating;
+
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(p,t,h)}</p>
+<br>
+<button onclick="window.open('${r.f.map}')">📍 View Location</button>
+</div>`;
+});
+
+document.getElementById("result").innerHTML=html;
+}
+</script>
+
+</body>
+</html>

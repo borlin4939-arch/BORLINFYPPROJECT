@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Perak Experience AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+table { width:100%; margin-top:10px; border-collapse: collapse; }
+td, th { border:1px solid #ddd; padding:8px; text-align:center; }
+</style>
+</head>
+<body>
+
+<h1>🏞️ Perak Experience Recommendation</h1>
+
+<div class="card">
+
+<label>🎯 Experience Type</label>
+<select id="type">
+<option value="explore">Exploring</option>
+<option value="exciting">Exciting</option>
+</select>
+
+<label>🌤 Environment</label>
+<select id="env">
+<option value="indoor">Indoor</option>
+<option value="outdoor">Outdoor</option>
+</select>
+
+<label>😌 Mood</label>
+<select id="mood">
+<option value="chill">Chill</option>
+<option value="hard">Hardcore</option>
+</select>
+
+
+<button onclick="recommend()">Get Experience</button>
+
+</div>
+
+<div id="result"></div>
+
+<script>
+
+
+const experiences = [
+{ name:"Lost World of Tambun", type:"exciting", env:"outdoor", mood:"hard", price:120,link:"https://sunwaylostworldoftambun.com/",img:"lostworld.png",map:"https://maps.app.goo.gl/YUwWetS1zNA3R92e9"},
+{ name:"Concubine Lane (二奶巷)", type:"explore", env:"outdoor", mood:"chill", price:0 ,link:"",img:"cocubinelane.png",map:"https://maps.app.goo.gl/VMKevfy5Fj7rz5qi8"},
+{ name:"Perak Cave Temple (霹雳洞)", type:"explore", env:"indoor", mood:"hard", price:45 ,link:"",img:"perakcave.png",map:"https://share.google/UINcDmVYYe3tFOpDL"},
+{ name:"Kek Lok Tong Cave", type:"explore", env:"indoor", mood:"chill", price:40 ,link:"",img:"kekloksi.png",map:"https://share.google/QQNSwxwl8YLJdZfKX"},
+{ name:"Mirror Lake", type:"explore", env:"outdoor", mood:"chill", price:15 ,link:"https://tasikcermin.com/",img:"mirrorlake.png",map:"https://share.google/ealkPCIGnn4B2c7cZ"}
+];
+
+
+function generateAIText(mood){
+    if(mood === "hard"){
+        return "This experience is recommended because it provides a more adventurous and energetic activity suitable for active users.";
+    } else {
+        return "This experience is recommended because it offers a relaxing and enjoyable environment perfect for a chill trip.";
+    }
+}
+
+
+function recommend(){
+
+let type=document.getElementById("type").value;
+let env=document.getElementById("env").value;
+let mood=document.getElementById("mood").value;
+
+let results=[];
+
+for(let e of experiences){
+
+let score=0;
+
+if(e.type === type) score += 5;
+if(e.env === env) score += 4;
+if(e.mood === mood) score += 6;
+
+
+if(e.type !== type) score -= 2;
+
+
+score += (150 - e.price) * 0.05;
+
+results.push({e, score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+
+let html = "<h2>🥇 Recommendation Result</h2>";
+
+results.forEach((r,index)=>{
+
+html += `
+<div class="card ${index===0 ? 'best' : ''}">
+<h3>#${index+1} ${r.e.name}</h3>
+<p>Price: RM ${r.e.price}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b> ${generateAIText(mood)}</p>
+<img src="${r.e.img}" alt="">
+<button class="card best" onclick="window.open('${r.e.link}')">Go to official webiste</button>
+<button class="card best" onclick="window.open('${r.e.map}')">View Location</button>
+</div>
+`;
+});
+
+
+html += `
+<div class="card">
+<h3>💰 Experience Comparison</h3>
+<table>
+<tr><th>Place</th><th>Type</th><th>Environment</th><th>Price</th></tr>
+`;
+
+results.forEach(r=>{
+html += `<tr>
+<td>${r.e.name}</td>
+<td>${r.e.type}</td>
+<td>${r.e.env}</td>
+<td>RM ${r.e.price}</td>
+</tr>`;
+});
+
+html += `</table></div>`;
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
