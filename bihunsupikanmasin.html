@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bihun Ikan Masin AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍜 Bihun SUP Ikan Masin Recommendation (Perak)</h1>
+
+<select id="halal">
+<option value="yes">Halal</option>
+<option value="no">Non-Halal</option>
+</select>
+
+<select id="salt">
+<option value="low">Low Salt</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<select id="spicy">
+<option value="low">Low Sambal</option>
+<option value="medium">Medium</option>
+<option value="high">Spicy</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+
+const foods=[
+{name:"Bihun Sup Utara Kak Chaq Corner", halal:"yes", salt:"medium", spicy:"medium", rating:4.5, img:"", map:"https://share.google/2GJ6Ri1uytUmRud5B"},
+{name:"RESTORAN BIHUN SUP MUAZ", halal:"yes", salt:"high", spicy:"high", rating:4.6, img:"", map:"https://share.google/Qrf72WYliwNeeGcnB"},
+{name:"Kak Long Bihun Sup", halal:"yes", salt:"medium", spicy:"low", rating:4.3, img:"", map:"https://share.google/4tj7y5QiPLY3vcaMG"},
+{name:"Bihun Sup Utara Haji Azli", halal:"yes", salt:"low", spicy:"medium", rating:4.2, img:"", map:"https://share.google/48dWabaNhDEJghWgH"},
+{name:"PAK TAM BIHUN SUP UTARA STADIUM", halal:"no", salt:"high", spicy:"high", rating:4.7, img:"", map:"https://share.google/hAcRnKRkHuMlBSUwj"}
+];
+
+function aiText(h){
+return h==="yes"?
+"Recommended because it matches your taste while ensuring halal compliance.":
+"Recommended because it matches your taste with more flexible ingredients.";
+}
+
+function recommend(){
+
+let h=document.getElementById("halal").value;
+let s=document.getElementById("salt").value;
+let sp=document.getElementById("spicy").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+if(f.halal===h) score+=5;
+if(f.salt===s) score+=3;
+if(f.spicy===sp) score+=3;
+
+score+=f.rating;
+
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>Top 5</h2>";
+
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b>${aiText(h)}</p>
+<img src="${r.f.img}">
+<button onclick="window.open('${r.f.map}')">Location</button>
+</div>`;
+});
+
+document.getElementById("result").innerHTML=html;
+}
+</script>
+
+</body>
+</html>

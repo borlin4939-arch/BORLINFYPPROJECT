@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Char Kuey Teow AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+</style>
+</head>
+<body>
+
+<h1>🍜 Char Kuey Teow Recommendation</h1>
+
+<div class="card">
+
+<label>🌶 Spicy</label>
+<select id="spicy">
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<label>🛢 Oiliness</label>
+<select id="oil">
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<label>🧂 Saltiness</label>
+<select id="salt">
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<label>☪️ Halal</label>
+<select id="halal">
+<option value="yes">Halal</option>
+<option value="no">Non-Halal</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+
+// ===== DATA（5个）=====
+const foods = [
+{ name:"Siam Road Charcoal Char Kuey Teow", rating:4.7, spicy:"high", oil:"high", salt:"medium", halal:"no", img:"", map:"https://share.google/UbYShZLG8ydMaAVoa" },
+{ name:"Seng Ghee Char Kuay Teow", rating:4.5, spicy:"medium", oil:"medium", salt:"high", halal:"yes", img:"", map:"https://share.google/VLXizJRuvl4wK1vY1" },
+{ name:"Tiger Char Koay Teow", rating:4.3, spicy:"low", oil:"low", salt:"medium", halal:"yes", img:"", map:"https://share.google/fe88bFzaeCBgpKVXE" },
+{ name:"Tsan Char Koay Teow @ Chowrasta", rating:4.6, spicy:"high", oil:"medium", salt:"high", halal:"no", img:"", map:"https://share.google/u4lGXAbgidEG8THfD" },
+{ name:"Penang Road Famous Laksa", rating:4.2, spicy:"medium", oil:"high", salt:"low", halal:"yes", img:"", map:"https://share.google/LN3v9wVqk9Fe00bO4" }
+];
+
+// ===== AI TEXT =====
+function generateAIText(userHalal){
+    if(userHalal === "yes"){
+        return "This char kuey teow is recommended because it matches your preferred spiciness, oiliness, and saltiness while ensuring it meets halal requirements.";
+    } else {
+        return "This char kuey teow is recommended because it matches your taste preferences and allows a wider range of ingredients, resulting in richer wok flavour.";
+    }
+}
+
+// ===== MAIN LOGIC =====
+function recommend(){
+
+let spicy=document.getElementById("spicy").value;
+let oil=document.getElementById("oil").value;
+let salt=document.getElementById("salt").value;
+let halal=document.getElementById("halal").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+if(f.spicy===spicy) score+=3;
+if(f.oil===oil) score+=2;
+if(f.salt===salt) score+=2;
+if(f.halal===halal) score+=5;
+
+score+=f.rating;
+
+results.push({f,score});
+}
+
+// 排序
+results.sort((a,b)=>b.score-a.score);
+
+// Top 5
+let topResults = results.slice(0,5);
+
+let html = "<h2>🥇 Top 5 Recommendation</h2>";
+
+topResults.forEach((r, index) => {
+
+let aiText = generateAIText(halal);
+
+html += `
+<div class="card ${index===0 ? 'best' : ''}">
+<h3>#${index+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b> ${aiText}</p>
+<img src="${r.f.img}">
+<br><br>
+<button onclick="window.open('${r.f.map}')">View Location</button>
+</div>
+`;
+});
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

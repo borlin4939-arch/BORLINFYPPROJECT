@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bak Kut Teh AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍲 Bak Kut Teh (Selangor)</h1>
+
+<label>🛢 Oiliness</label>
+<select id="oil">
+<option value="low">🙂 Light</option>
+<option value="medium">😌 Medium</option>
+<option value="high">😋 Oily</option>
+</select>
+
+<label>🧂 Saltiness</label>
+<select id="salt">
+<option value="low">🙂 Low</option>
+<option value="medium">😌 Medium</option>
+<option value="high">😋 Salty</option>
+</select>
+
+<label>🕒 Time</label>
+<select id="time">
+<option value="morning">🌅 Morning</option>
+<option value="night">🌙 Night</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+<div id="result"></div>
+
+<script>
+const foods=[
+{name:"Teluk Pulai Bak Kut Teh", oil:"high", salt:"medium", time:"night", rating:4.8, map:"https://share.google/k3AH5MAq8h4ldGD77"},
+{name:"Ah Sang Bak Kut Teh", oil:"medium", salt:"high", time:"morning", rating:4.6, map:"https://share.google/4qiFv23fRIi3y68Ii"},
+{name:"Kee Heong Bak Kut Teh", oil:"low", salt:"medium", time:"morning", rating:4.4, map:"https://share.google/xgb94QmdnMoEG7VlT"},
+{name:"Heng Kee Bak Kut Teh", oil:"high", salt:"high", time:"night", rating:4.7, map:"https://share.google/ReUbsqNyybUf4ZcLE"},
+{name:"Seng Huat Bak Kut Teh Restaurant", oil:"medium", salt:"low", time:"morning", rating:4.5, map:"https://share.google/gQFjebuSgo9CYv2yI"}
+];
+
+function aiText(o,s,t){
+return `Recommended because it matches your ${o} oiliness, ${s} saltiness, and preferred ${t} dining time.`;
+}
+
+function recommend(){
+let o=oil.value, s=salt.value, t=time.value;
+let results=[];
+
+for(let f of foods){
+let score=0;
+if(f.oil===o) score+=4;
+if(f.salt===s) score+=4;
+if(f.time===t) score+=3;
+score+=f.rating;
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(o,s,t)}</p>
+<button onclick="window.open('${r.f.map}')">📍 View Location</button>
+</div>`;
+});
+result.innerHTML=html;
+}
+</script>
+
+</body>
+</html>

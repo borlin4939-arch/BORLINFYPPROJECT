@@ -1,0 +1,21 @@
+[
+    {
+    "title": "Ayam Gepuk",
+    "description": "Indonesian-style smashed fried chicken served with spicy sambal, rice, and fresh vegetables, very popular among locals.",
+    "link": "ayamgepuk.html",
+    "img": "ayamgepuk.jpg"
+  },
+  {
+    "title": "Chill Cafe",
+    "description": "KL got Thousand of cafe and which one is the best?",
+    "link": "cafee.html",
+    "img": "cafe.jpg"
+  },
+  {
+    "title": "Laksa",
+    "description": "a popular Southeast Asian spicy noodle soup,It is characterized by its rich broth, which is typically either a spicy coconut curry",
+    "link": "laksa.html",
+    "img": "laksa.jpg"
+    
+  }
+]

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Chill Cafe AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>☕ Chill Cafe (Kuala Lumpur)</h1>
+
+
+<label>🍹 Preference</label>
+<select id="drink">
+<option value="coffee">☕ Coffee</option>
+<option value="tea">🍵 Tea</option>
+<option value="alcohol">🍷 Alcoholic</option>
+</select>
+
+<label>🍽 Type</label>
+<select id="type">
+<option value="drink">🥤 Drink Only</option>
+<option value="both">🍽 Food & Drink</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+
+
+const cafes=[
+{name:"Bangsar Coffee House", drink:"coffee", type:"both", rating:4.6, map:"https://share.google/yfA9DLPSYlG90ryg6"},
+{name:"KL Tea Lounge of four season", drink:"tea", type:"drink", rating:4.4, map:"https://share.google/Dd4WfROQWyiaTMTVw"},
+{name:"After One KL", drink:"alcohol", type:"drink", rating:4.7, map:"https://share.google/zCGGla3Od3bp7oMFD"},
+{name:"POKOK KL Cafe", drink:"coffee", type:"both", rating:4.5, map:"https://share.google/sMJFNPJSEmEldluLC"},
+{name:"LOKL Coffee Co", drink:"tea", type:"both", rating:4.3, map:"https://share.google/sMJFNPJSEmEldluLC"}
+];
+
+function aiText(d,t){
+return `Recommended because it matches your preference for ${d} and your choice of ${t === "both" ? "food and drinks" : "drinks only"}.`;
+}
+
+function recommend(){
+let d=drink.value, t=type.value;
+let results=[];
+
+for(let c of cafes){
+let score=0;
+if(c.drink===d) score+=5;
+if(c.type===t) score+=4;
+score+=c.rating;
+results.push({c,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.c.name}</h3>
+<p>⭐ ${r.c.rating}</p>
+<p>${aiText(d,t)}</p>
+<button onclick="window.open('${r.c.map}')">📍 View Location</button>
+</div>`;
+});
+result.innerHTML=html;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Johor Flight AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+table { width:100%; margin-top:10px; border-collapse: collapse; }
+td, th { border:1px solid #ddd; padding:8px; text-align:center; }
+</style>
+</head>
+<body>
+
+<h1>✈️ Johor Flight Recommendation</h1>
+
+<div class="card">
+
+<label>📍 Destination</label>
+<select id="destination">
+<option value="penang">Penang</option>
+<option value="KL">KL</option>
+</select>
+
+<label>🪑 Class</label>
+<select id="class">
+<option value="economy">Economy</option>
+<option value="business">Business</option>
+</select>
+
+<label>🏢 Airline Preference</label>
+<select id="airline">
+<option value="any">Any</option>
+<option value="scoot">Scoot</option>
+<option value="batik">Batik</option>
+<option value="airasia">AirAsia</option>
+</select>
+
+<label>📅 Travel Date</label>
+<input type="date" id="date">
+
+<button onclick="recommendFlight()">Search Flight</button>
+
+</div>
+
+<div id="result"></div>
+
+<script>
+
+
+const flights = [
+{ airline:"Scoot", destination:"penang", class:"economy", price:120 ,link:"https://www.flyscoot.com/",img:"scoot.png"},
+{ airline:"Batik", destination:"penang", class:"economy", price:150 ,link:"https://www.batikair.com.my/",img:"batik.png"},
+{ airline:"AirAsia", destination:"penang", class:"economy", price:100,link:"https://www.airasia.com/flight/" ,img:"airasia.png"},
+
+{ airline:"Scoot", destination:"penang", class:"business", price:300,link:"https://www.flyscoot.com/",img:"scoot.png"},
+{ airline:"Batik", destination:"penang", class:"business", price:350 ,link:"https://www.batikair.com.my/",img:"batik.png"},
+{ airline:"AirAsia", destination:"penang", class:"business", price:280 ,link:"https://www.airasia.com/flight/" ,img:"airasia.png"},
+
+{ airline:"Scoot", destination:"KL", class:"economy", price:140 ,link:"https://www.flyscoot.com/",img:"scoot.png"},
+{ airline:"Batik", destination:"KL", class:"economy", price:160 ,link:"https://www.batikair.com.my/",img:"batik.png"},
+{ airline:"AirAsia", destination:"KL", class:"economy", price:130 ,link:"https://www.airasia.com/flight/",img:"airasia.png" },
+
+{ airline:"Scoot", destination:"KL", class:"business", price:320 ,link:"https://www.flyscoot.com/",img:"scoot.png"},
+{ airline:"Batik", destination:"KL", class:"business", price:360 ,link:"https://www.batikair.com.my/",img:"batik.png"},
+{ airline:"AirAsia", destination:"KL", class:"business", price:300 ,link:"https://www.airasia.com/flight/" ,img:"airasia.png"}
+];
+
+
+function generateAIText(flight){
+    return `This flight is recommended because it offers the best balance between price and your selected class with ${flight.airline}.`;
+}
+
+function recommendFlight(){
+
+let destination = document.getElementById("destination").value;
+let flightClass = document.getElementById("class").value;
+let airline = document.getElementById("airline").value;
+let date = document.getElementById("date").value;
+
+
+let results = [];
+
+
+for(let f of flights){
+
+if(f.destination !== destination) continue;
+if(f.class !== flightClass) continue;
+
+
+let score = 0;
+
+
+score += (400 - f.price);
+
+
+if(airline !== "any" && f.airline.toLowerCase() === airline){
+    score += 50;
+}
+
+results.push({f, score});
+}
+
+
+results.sort((a,b)=>b.score-a.score);
+
+
+let best = results[0];
+
+
+let html = `
+<div class="card best">
+<h2>🥇 Best Flight</h2>
+<p>Destination: ${destination.toUpperCase()}</p>
+<p>Airline: ${best.f.airline}</p>
+<p>Class: ${best.f.class}</p>
+<p>Price: RM ${best.f.price}</p>
+<p>Date: ${date || "Not Selected"}</p>
+<p><b>AI Suggestion:</b> ${generateAIText(best.f)}</p>
+<button class="card best" onclick="window.open('${best.f.link}')">Go to official webiste</button>
+<img src="${best.f.img}" alt="">
+</div>
+`;
+
+
+html += `<div class="card">
+<h3>💰 Price Comparison</h3>
+<table>
+<tr><th>Airline</th><th>Class</th><th>Price (RM)</th></tr>
+`;
+
+results.forEach(r=>{
+html += `<tr>
+<td>${r.f.airline}</td>
+<td>${r.f.class}</td>
+<td>${r.f.price}</td>
+</tr>`;
+});
+
+html += `</table></div>`;
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

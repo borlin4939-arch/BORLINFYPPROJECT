@@ -1,0 +1,21 @@
+[
+    {
+    "title": "JOHOR flight",
+    "description": "Feel free to flight",
+    "link": "johorflight.html",
+    "img":"johorflight.jpg"
+  },
+  {
+    "title": "Kl flight",
+    "description": "Feel free to flight",
+    "link": "klflight.html",
+    "img":"klflight.jpg"
+  },
+  {
+    "title": "Penang flight",
+    "description": "Feel free to flight",
+    "link": "penangflight.html",
+    "img":"penangflight.jpg"
+  }
+
+]

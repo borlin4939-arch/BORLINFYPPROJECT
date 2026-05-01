@@ -1,0 +1,20 @@
+[
+ {
+    "title": "Asam Laksa",
+    "description": "Asam laksa is a popular Malaysian rice noodle soup known for its tangy, spicy, and savory fish-based broth.",
+    "link": "asamlaksa.html",
+    "img": "asamlaksa.jpg"
+  },
+   {
+    "title": "hainannese chicken chop",
+    "description": "Hainanese chicken chop is a iconic Malaysian/Singaporean comfort food created by Hainanese cooks during British colonial rule.",
+    "link": "hainannesechickenchop.html",
+    "img": "hainanasechickenchop.jpg"
+  },
+   {
+    "title": "Ramly Burger",
+    "description": "A famous Malaysian street burger wrapped in egg, filled with beef or chicken patty, sauces, and vegetables.",
+    "link": "ramlyburger.html",
+    "img": "ramlyburger.jpg"
+  }
+]

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ayam Gepuk AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍗 Ayam Gepuk (Kuala Lumpur)</h1>
+
+<label>🥜 Peanut Sauce Sweetness</label>
+<select id="sweet">
+<option value="low">🙂 Low</option>
+<option value="high">😋 High</option>
+</select>
+
+<label>🌶 Sambal Spiciness</label>
+<select id="spicy">
+<option value="low">🙂 Mild</option>
+<option value="medium">😌 Medium</option>
+<option value="high">🔥 Spicy</option>
+</select>
+
+<label>🕒 Time</label>
+<select id="time">
+<option value="morning">🌅 Morning</option>
+<option value="night">🌙 Night</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+const foods=[
+{name:"Wangsa Maju Ayam Gepuk", sweet:"high", spicy:"high", time:"night", rating:4.7, map:"https://share.google/arBurXPH1QxJ74tF6"},
+{name:"Ayam Gepuk Top Global Wangsa Delima", sweet:"low", spicy:"medium", time:"morning", rating:4.5, map:"https://share.google/arBurXPH1QxJ74tF6"},
+{name:"Ayam Gepuk Express Wangsa Maju", sweet:"high", spicy:"medium", time:"night", rating:4.6, map:"https://share.google/1wCneY3huIIWz1Wrs"},
+{name:"Ole Ayam Gepuk Wangsa Delima", sweet:"low", spicy:"low", time:"morning", rating:4.3, map:"https://share.google/HblaIEfRBRDteMbR7"},
+{name:"Ayam Gepuk Redup", sweet:"high", spicy:"high", time:"night", rating:4.8, map:"https://share.google/USarJlx1pLnO9zlzF"}
+];
+
+
+function aiText(s,p,t){
+return `Recommended because it matches your ${s} peanut sauce sweetness, ${p} sambal level, and preferred ${t} dining time.`;
+}
+
+function recommend(){
+let s=sweet.value, p=spicy.value, t=time.value;
+let results=[];
+
+for(let f of foods){
+let score=0;
+if(f.sweet===s) score+=4;
+if(f.spicy===p) score+=4;
+if(f.time===t) score+=3;
+score+=f.rating;
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(s,p,t)}</p>
+<button onclick="window.open('${r.f.map}')">📍 View Location</button>
+</div>`;
+});
+result.innerHTML=html;
+}
+</script>
+
+</body>
+</html>

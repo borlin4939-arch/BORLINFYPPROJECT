@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KL Mall AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+table { width:100%; margin-top:10px; border-collapse: collapse; }
+td, th { border:1px solid #ddd; padding:8px; text-align:center; }
+</style>
+</head>
+<body>
+
+<h1>🏬 KL Mall Recommendation</h1>
+
+<div class="card">
+
+<label>💰 Mall Type</label>
+<select id="type">
+<option value="luxury">Luxury</option>
+<option value="middle">Middle Class</option>
+<option value="essential">Essential</option>
+</select>
+
+<label>👥 Crowd Level</label>
+<select id="crowd">
+<option value="busy">Crowded</option>
+<option value="less">Less Crowded</option>
+</select>
+
+<button onclick="recommend()">Find Mall</button>
+
+</div>
+
+<div id="result"></div>
+
+<script>
+
+
+const malls = [
+{ name:"TRX Mall", type:"luxury", crowd:"busy",link:"https://share.google/bvACBorVLHkX0i4O5",img:"trxexchange.png"},
+{ name:"Suria KLCC", type:"luxury", crowd:"less",link:"https://share.google/pBqKwzncTHCDRabfl",img:"suriaklcc.png" },
+{ name:"Pavilion KL", type:"luxury", crowd:"busy" ,link:"https://share.google/URNaTKHabnzs6iVZt",img:"pavillion.png"},
+
+{ name:"Mid Valley", type:"middle", crowd:"busy" ,link:"https://share.google/cGFePtuIF6nqmrmSq",img:"midvalley.png"},
+{ name:"Sunway Pyramid", type:"middle", crowd:"busy" ,link:"https://share.google/bllmqw2B1BIDVG5ss",img:"sunwaypyramid.png"},
+{ name:"IOI Puchong", type:"middle", crowd:"less" ,link:"https://share.google/vX3XbfuuZotDLu0kF",img:"ioipuchong.png"},
+
+{ name:"Lotus's", type:"essential", crowd:"less" ,link:"https://share.google/bHin9m0jVQ8eknKhP",img:"lotus.png"},
+{ name:"AEON", type:"essential", crowd:"busy" ,link:"https://www.google.com/search?rlz=1C1CHBF_enMY1119MY1119&sca_esv=6ec4181ccdb48170&cs=0&output=search&kgmid=%2Fg%2F1tdhbj8f&q=AEON%20Mall%20Taman%20Maluri&shem=rimspwouoe&shndl=30&source=sh%2Fx%2Floc%2Funi%2Fm1%2F1&kgs=0652512f7f8ec958",img:"aeon.png"},
+{ name:"Econsave", type:"essential", crowd:"less" ,link:"https://share.google/uedNQdke4dLQT8nrP",img:"econsave.png"}
+];
+
+
+function generateAIText(type){
+    if(type === "luxury"){
+        return "This mall is recommended because it offers a premium shopping experience with high-end brands and modern facilities.";
+    } else if(type === "middle"){
+        return "This mall is recommended because it provides a balanced shopping experience with a mix of affordability and variety.";
+    } else {
+        return "This mall is recommended because it focuses on essential daily needs with affordable pricing and convenience.";
+    }
+}
+
+// ===== MAIN =====
+function recommend(){
+
+let type=document.getElementById("type").value;
+let crowd=document.getElementById("crowd").value;
+
+let results=[];
+
+for(let m of malls){
+
+let score=0;
+
+
+if(m.type === type) score += 6;
+
+
+if(m.crowd === crowd) score += 5;
+
+
+if(m.type !== type) score -= 2;
+
+results.push({m, score});
+}
+
+
+results.sort((a,b)=>b.score-a.score);
+
+
+let html = "<h2>🥇 Recommendation Result</h2>";
+
+results.forEach((r,index)=>{
+
+html += `
+<div class="card ${index===0 ? 'best' : ''}">
+<h3>#${index+1} ${r.m.name}</h3>
+<p>Type: ${r.m.type}</p>
+<p>Crowd: ${r.m.crowd}</p>
+<p>Score: ${r.score}</p>
+<p><b>AI Suggestion:</b> ${generateAIText(r.m.type)}</p>
+<button class="card best" onclick="window.open('${r.m.link}')">View Location</button>
+<img src="${r.m.img}" alt="">
+</div>
+`;
+});
+
+
+html += `
+<div class="card">
+<h3>📊 Mall Comparison</h3>
+<table>
+<tr><th>Mall</th><th>Type</th><th>Crowd</th></tr>
+`;
+
+results.forEach(r=>{
+html += `<tr>
+<td>${r.m.name}</td>
+<td>${r.m.type}</td>
+<td>${r.m.crowd}</td>
+</tr>`;
+});
+
+html += `</table></div>`;
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

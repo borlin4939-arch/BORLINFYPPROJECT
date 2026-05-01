@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KL Experience AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+table { width:100%; margin-top:10px; border-collapse: collapse; }
+td, th { border:1px solid #ddd; padding:8px; text-align:center; }
+</style>
+</head>
+<body>
+
+<h1>🏙️ KL Experience Recommendation</h1>
+
+<div class="card">
+
+<label>🎯 Experience Type</label>
+<select id="type">
+<option value="explore">Exploring</option>
+<option value="exciting">Exciting</option>
+<option value="history">History</option>
+</select>
+
+<label>🌤 Environment</label>
+<select id="env">
+<option value="indoor">Indoor</option>
+<option value="outdoor">Outdoor</option>
+</select>
+
+<label>😌 Mood</label>
+<select id="mood">
+<option value="chill">Chill</option>
+<option value="hard">Hardcore</option>
+</select>
+
+<button onclick="recommend()">Get Experience</button>
+
+</div>
+
+<div id="result"></div>
+
+<script>
+
+
+const experiences = [
+{ name:"Sunway Lagoon", type:"exciting", env:"outdoor", mood:"hard", price:180,link:"https://sunwaylagoon.com/",img:"sunwaylagoon.png" ,map:"https://share.google/AaLwJjURhwnHHECEa"},
+{ name:"Zoo Negara", type:"explore", env:"outdoor", mood:"chill", price:45 ,link:"https://www.zoonegara.my/#gsc.tab=0",img:"zoonegara.png",map:"https://share.google/nSytbTiz4YmxtYJkR"},
+{ name:"Aquaria KLCC", type:"explore", env:"indoor", mood:"chill", price:70 ,link:"https://aquariaklcc.com/",img:"klccaquaria.png",map:"https://share.google/UJlxGv2oslPg5YiqE"},
+{ name:"Batu Caves", type:"explore", env:"outdoor", mood:"hard", price:0 ,link:"",img:"batucaves.png",map:"https://share.google/mz2DU8sEUZZG4Hqpf"},
+{ name:"Putra Mosque (Pink Mosque)", type:"history", env:"outdoor", mood:"chill", price:0 ,link:"",img:"pinkmosque.png",map:"https://share.google/X6u7OMbxuBmbg29vM"},
+{ name:"Ice Skating (Sunway Pyramid)", type:"exciting", env:"indoor", mood:"hard", price:50 ,link:"https://www.sunwaypyramidice.com/",img:"sunwayiceskating.png",map:"https://share.google/UPbA1Px76vBhY5dxs"}
+];
+
+
+function generateAIText(mood){
+    if(mood === "hard"){
+        return "This experience is recommended because it offers a more energetic and exciting activity suitable for active users.";
+    } else {
+        return "This experience is recommended because it provides a relaxing and enjoyable environment for a chill outing.";
+    }
+}
+function recommend(){
+
+let type=document.getElementById("type").value;
+let env=document.getElementById("env").value;
+let mood=document.getElementById("mood").value;
+
+let results=[];
+
+for(let e of experiences){
+
+let score=0;
+
+
+if(e.type === type) score += 5;
+if(e.env === env) score += 4;
+if(e.mood === mood) score += 6;
+
+
+if(e.type !== type) score -= 2;
+
+
+score += (200 - e.price) * 0.02;
+
+results.push({e, score});
+}
+
+
+results.sort((a,b)=>b.score-a.score);
+
+
+let html = "<h2>🥇 Recommendation Result</h2>";
+
+results.forEach((r,index)=>{
+
+html += `
+<div class="card ${index===0 ? 'best' : ''}">
+<h3>#${index+1} ${r.e.name}</h3>
+<p>Price: RM ${r.e.price}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b> ${generateAIText(mood)}</p>
+<button class="card best" onclick="window.open('${r.e.link}')">Go to official webiste</button>
+<button class="card best" onclick="window.open('${r.e.map}')">Google MAP</button>
+<img src="${r.e.img}" alt="">
+</div>
+`;
+});
+
+
+html += `
+<div class="card">
+<h3>💰 Experience Comparison</h3>
+<table>
+<tr><th>Place</th><th>Type</th><th>Environment</th><th>Price</th></tr>
+`;
+
+results.forEach(r=>{
+html += `<tr>
+<td>${r.e.name}</td>
+<td>${r.e.type}</td>
+<td>${r.e.env}</td>
+<td>RM ${r.e.price}</td>
+</tr>`;
+});
+
+html += `</table></div>`;
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

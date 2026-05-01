@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Curry Mee AI Recommendation</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; margin-top:15px; }
+.best { border-left: 6px solid green; }
+</style>
+</head>
+<body>
+
+<h1>🍜 Curry Mee Recommendation</h1>
+
+<div class="card">
+<label>🌶 Spicy</label>
+<select id="spicy">
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<label>🛢 Oiliness</label>
+<select id="oil">
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<label>🧂 Saltiness</label>
+<select id="salt">
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<label>☪️ Halal</label>
+<select id="halal">
+<option value="yes">Halal</option>
+<option value="no">Non-Halal</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+
+
+const foods = [
+{ name:"Tua Pui Curry Mee", rating:4.6, spicy:"high", oil:"high", salt:"medium", halal:"no", img:"", map:"https://share.google/oRx7grrAAuU7XRJ1n" },
+{ name:"胜记白咖喱面 Sheng Ji White Curry Mee", rating:4.3, spicy:"medium", oil:"medium", salt:"high", halal:"yes", img:"", map:"https://share.google/hbMy40z4y0LROAVV5" },
+{ name:"槟城白咖哩 Yoo White Curry Mee", rating:4.4, spicy:"low", oil:"low", salt:"medium", halal:"yes", img:"", map:"https://share.google/8MCroQyVltQwIbp5z" },
+{ name:"Manzu Curry Noodle House 满茿咖喱面馆", rating:4.5, spicy:"high", oil:"medium", salt:"high", halal:"no", img:"", map:"https://share.google/LJDMPeMStjdkcVBrM" },
+{ name:"Hot Bowl White Curry Mee", rating:4.2, spicy:"medium", oil:"high", salt:"low", halal:"yes", img:"", map:"https://share.google/UuNBlpcQkczAu0idQ" }
+];
+
+
+function generateAIText(userHalal){
+    if(userHalal === "yes"){
+        return "This curry mee is recommended because it matches your preferred spiciness, oiliness, and saltiness while ensuring it meets halal requirements for safe consumption.";
+    } else {
+        return "This curry mee is recommended because it matches your preferred taste profile and allows a wider range of ingredients, offering richer and more flavorful options.";
+    }
+}
+
+
+function recommend(){
+
+let spicy=document.getElementById("spicy").value;
+let oil=document.getElementById("oil").value;
+let salt=document.getElementById("salt").value;
+let halal=document.getElementById("halal").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+
+if(f.spicy===spicy) score+=3;
+if(f.oil===oil) score+=2;
+if(f.salt===salt) score+=2;
+if(f.halal===halal) score+=5;
+
+// rating boost
+score+=f.rating;
+
+results.push({f,score});
+}
+
+// sort
+results.sort((a,b)=>b.score-a.score);
+
+// top 5
+let topResults = results.slice(0,5);
+
+let html = "<h2>🥇 Top 5 Recommendation</h2>";
+
+topResults.forEach((r, index) => {
+
+let aiText = generateAIText(halal);
+
+html += `
+<div class="card ${index===0 ? 'best' : ''}">
+<h3>#${index+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b> ${aiText}</p>
+<img src="${r.f.img}">
+<br><br>
+<button onclick="window.open('${r.f.map}')">View Location</button>
+</div>
+`;
+});
+
+document.getElementById("result").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

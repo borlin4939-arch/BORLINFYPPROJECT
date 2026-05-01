@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Asam Laksa AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍜 Asam Laksa (Johor)</h1>
+
+<label>🍋 Sourness</label>
+<select id="sour">
+<option value="low">🙂 Low</option>
+<option value="medium">😌 Medium</option>
+<option value="high">😋 High</option>
+</select>
+
+<label>🌶 Spiciness</label>
+<select id="spicy">
+<option value="low">🙂 Mild</option>
+<option value="medium">😌 Medium</option>
+<option value="high">🔥 Spicy</option>
+</select>
+
+<label>🛢 Oiliness</label>
+<select id="oil">
+<option value="low">🙂 Light</option>
+<option value="medium">😌 Medium</option>
+<option value="high">😋 Oily</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+
+const foods=[
+{name:"Penang Assam Laksa", sour:"high", spicy:"medium", oil:"low", rating:4.6, map:"https://share.google/MzYzHv51JkTD4hqlp"},
+{name:"D Laksa KSL City Mall", sour:"medium", spicy:"high", oil:"medium", rating:4.5, map:"https://share.google/usukKbWXQHcV17KRh"},
+{name:"ASAM LAKSA UTARA", sour:"high", spicy:"high", oil:"high", rating:4.7, map:"https://share.google/VXgNjZCsaPX8mJArF"},
+{name:"Assam Laksa Woo", sour:"low", spicy:"medium", oil:"low", rating:4.3, map:"https://share.google/3VwWsVODonRuFObTO"},
+{name:"知乡味 Asam Laksa - 911 Food Count", sour:"medium", spicy:"low", oil:"medium", rating:4.4, map:"https://share.google/BG6pbfLlc60zHlb3l"}
+];
+
+function aiText(s,p,o){
+return `Recommended because it matches your ${s} sourness, ${p} spice level, and ${o} oiliness preference.`;
+}
+
+function recommend(){
+
+let s=document.getElementById("sour").value;
+let p=document.getElementById("spicy").value;
+let o=document.getElementById("oil").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+if(f.sour===s) score+=4;
+if(f.spicy===p) score+=4;
+if(f.oil===o) score+=3;
+
+score+=f.rating;
+
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(s,p,o)}</p>
+<br>
+<button onclick="window.open('${r.f.map}')">📍 View Location</button>
+</div>`;
+});
+
+document.getElementById("result").innerHTML=html;
+}
+</script>
+
+</body>
+</html>

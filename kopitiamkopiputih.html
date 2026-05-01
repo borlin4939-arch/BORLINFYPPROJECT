@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kopi Putih AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>☕ Kopi Putih (Perak)</h1>
+
+<select id="milk">
+<option value="yes">With Milk</option>
+<option value="no">No Milk</option>
+</select>
+
+<select id="bean">
+<option value="local">Local Bean</option>
+<option value="import">Imported Bean</option>
+</select>
+
+<select id="strong">
+<option value="light">Light</option>
+<option value="medium">Medium</option>
+<option value="strong">Strong</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+
+const drinks=[
+{name:"Kedai Makanan Nam Heong", milk:"yes", bean:"local", strong:"medium", rating:4.6,map:"https://share.google/91Wx8cNKvFseXCMbo"},
+{name:"Chang Jiang White Coffee", milk:"yes", bean:"local", strong:"strong", rating:4.7,map:"https://share.google/Jlm6vAQ0GQKFRllMH"},
+{name:"OLDTOWN White Coffee @ Ipoh Padang", milk:"no", bean:"import", strong:"strong", rating:4.4,map:"https://share.google/DY53DMwkXXHHQQ5m1"},
+{name:"Ipoh White Coffee Sun Yuan Foong Coffee Shop • 新源豊怡保旧街場白咖啡茶室", milk:"yes", bean:"local", strong:"light", rating:4.3,map:"https://share.google/X8Q36g5nJF3G5CgF0"},
+{name:"Hipster Cafe", milk:"no", bean:"import", strong:"medium", rating:4.5,map:"https://share.google/X8Q36g5nJF3G5CgF0"}
+];
+function generateAIText(milk, bean, strong){
+
+let text = "This kopi putih is recommended because ";
+
+if(milk === "yes"){
+    text += "it includes milk for a smoother taste, ";
+}else{
+    text += "it is served without milk for a stronger coffee experience, ";
+}
+
+if(bean === "local"){
+    text += "using local coffee beans, ";
+}else{
+    text += "using imported beans, ";
+}
+
+text += `with a ${strong} strength level that fits your preference.`;
+
+return text;
+}
+function recommend(){
+
+let m=document.getElementById("milk").value;
+let b=document.getElementById("bean").value;
+let s=document.getElementById("strong").value;
+
+let results=[];
+
+for(let d of drinks){
+
+let score=0;
+
+if(d.milk===m) score+=4;
+if(d.bean===b) score+=3;
+if(d.strong===s) score+=3;
+
+score+=d.rating;
+
+results.push({d,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>Top 5</h2>";
+
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.d.name}</h3>
+<p>⭐ ${r.d.rating}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b> ${generateAIText(m,b,s)}</p>
+<button onclick="window.open('${r.d.map}')">View Location</button>
+</div>`;
+});
+
+document.getElementById("result").innerHTML=html;
+}
+</script>
+
+</body>
+</html>

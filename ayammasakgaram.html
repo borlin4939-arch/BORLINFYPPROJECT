@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ayam Masak Garam AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍗 Ayam Masak Garam (Perak)</h1>
+
+<select id="halal">
+<option value="yes">Halal</option>
+<option value="no">Non-Halal</option>
+</select>
+
+<select id="oil">
+<option value="low">Low Oil</option>
+<option value="medium">Medium</option>
+<option value="high">Oily</option>
+</select>
+
+<select id="salt">
+<option value="low">Low Salt</option>
+<option value="medium">Medium</option>
+<option value="high">Salty</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+
+<div id="result"></div>
+
+<script>
+
+const foods=[
+{name:"Aun Kheng Lim Salted Chicken 宴瓊林鹽焗鷄", halal:"yes", oil:"medium", salt:"medium", rating:4.5,map:"https://share.google/vHA2AdvJNEBtWDPEv"},
+{name:"Ipoh Kheng Lim Salted Chicken", halal:"yes", oil:"low", salt:"high", rating:4.6,map:"https://share.google/BD0vaSu0F8Us7U0b2"},
+{name:"LIM salted chicken", halal:"no", oil:"high", salt:"high", rating:4.4,map:"https://share.google/BD0vaSu0F8Us7U0b2"},
+{name:"Old Town  salted Chicken", halal:"yes", oil:"medium", salt:"low", rating:4.2,map:"https://share.google/BD0vaSu0F8Us7U0b2"},
+{name:"Street Food Ipoh salted chicken", halal:"no", oil:"high", salt:"medium", rating:4.7,map:"https://share.google/BD0vaSu0F8Us7U0b2"}
+];
+
+function generateAIText(halal, oil, salt){
+
+let text = "This salted chicken is recommended because ";
+
+if(halal === "yes"){
+    text += "it is halal-friendly, ";
+}else{
+    text += "it offers more traditional flavour flexibility, ";
+}
+
+text += `with ${oil} oil level and ${salt} saltiness that matches your taste preference.`;
+
+return text;
+}
+function recommend(){
+
+let h=document.getElementById("halal").value;
+let o=document.getElementById("oil").value;
+let s=document.getElementById("salt").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+if(f.halal===h) score+=5;
+if(f.oil===o) score+=3;
+if(f.salt===s) score+=3;
+
+score+=f.rating;
+
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>Top 5</h2>";
+
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>Score: ${r.score.toFixed(2)}</p>
+<p><b>AI Suggestion:</b> ${generateAIText(h,o,s)}</p>
+<button onclick="window.open('${r.f.map}')">View Location</button>
+</div>`;
+});
+
+document.getElementById("result").innerHTML=html;
+}
+</script>
+
+</body>
+</html>

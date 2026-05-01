@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Laksa AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍜 Laksa (Kuala Lumpur)</h1>
+
+
+<label>🌶 Spiciness</label>
+<select id="spicy">
+<option value="low">🙂 Mild</option>
+<option value="medium">😌 Medium</option>
+<option value="high">🔥 Spicy</option>
+</select>
+
+<label>🥥 Santan</label>
+<select id="santan">
+<option value="yes">🥥 With Santan</option>
+<option value="no">🚫 No Santan</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+
+
+const foods=[
+{name:"Limapulo", spicy:"high", santan:"yes", rating:4.7, map:"https://share.google/9h0NxgbKU41pPb1Gb"},
+{name:"Laksa Kg Baru", spicy:"medium", santan:"yes", rating:4.5, map:"https://share.google/9h0NxgbKU41pPb1Gb"},
+{name:"Restoran Dapur Sarawak", spicy:"low", santan:"no", rating:4.3, map:"https://www.google.com/search?rlz=1C1CHBF_enMY1119MY1119&sca_esv=d07bd56edf8f0c31&cs=0&output=search&kgmid=%2Fg%2F11b620jnys&q=Restoran%20Dapur%20Sarawak&shem=rimspwouoe&shndl=30&source=sh%2Fx%2Floc%2Funi%2Fm1%2F1&kgs=8858e44aefe2d11d"},
+{name:"Granny Q Lemak Laksa", spicy:"high", santan:"no", rating:4.6, map:"https://share.google/hmEcFBdHhkC3GU77f"},
+{name:"Wei Yi Curry Laksa 唯一叻沙", spicy:"medium", santan:"yes", rating:4.8, map:"https://share.google/gJrNH4bXLImmTj6gD"}
+];
+
+function aiText(p,s){
+return `Recommended because it matches your ${p} spice level and preference for ${s === "yes" ? "santan-based laksa" : "non-santan laksa"}.`;
+}
+
+function recommend(){
+let p=spicy.value, s=santan.value;
+let results=[];
+
+for(let f of foods){
+let score=0;
+if(f.spicy===p) score+=4;
+if(f.santan===s) score+=4;
+score+=f.rating;
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(p,s)}</p>
+<button onclick="window.open('${r.f.map}')">📍 View Location</button>
+</div>`;
+});
+result.innerHTML=html;
+}
+</script>
+
+</body>
+</html>

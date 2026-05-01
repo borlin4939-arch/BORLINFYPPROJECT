@@ -1,0 +1,42 @@
+[
+
+{
+    "title": "Penang Food",
+    "description": "Famous street food",
+    "link": "penangfood.html",
+    "img":"penangfood.jpg"
+  },
+{
+    "title": "Perak Food",
+    "description": "Taste the most authentic White coffee in Malaysia",
+    "link": "perakfood.html",
+    "img":"perakfood.jpg"
+  },
+  {
+    "title": "Terengganu Food",
+    "description": "Taste the freshness of Seafood",
+    "link": "terengganufood.html",
+    "img":"terenggganufood.jpg"
+  },
+  {
+    "title": "Johor Food",
+    "description": "Taste the best asam laksa in the world",
+    "link": "johorfood.html",
+    "img":"johorfood.jpg"
+  }, {
+    "title": "KL Food",
+    "description": "Taste the best ayam gepuk in KL!",
+    "link": "klfood.html",
+    "img":"klfood.jpg"
+  },{
+    "title": "SELANGOR Food",
+    "description": "Taste the most authentic BAK KUT TEH in Malaysia",
+    "link": "selangorfood.html",
+    "img":"selangorfood.jpg"
+  },{
+    "title": "PERLIS Food",
+    "description": "Let the ikan bakar conquer your tougue",
+    "link": "perlisfood.html",
+    "img":"perlisfood.jpg"
+  }
+]
