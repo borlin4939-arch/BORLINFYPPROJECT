@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Udang Goreng AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🍤 Udang Goreng (Terengganu)</h1>
+
+<label>🧂 Saltiness</label>
+<select id="salt">
+<option value="low">🙂 Low</option>
+<option value="medium">😌 Medium</option>
+<option value="high">😋 High</option>
+</select>
+
+<label>🌶 Spiciness</label>
+<select id="spicy">
+<option value="low">🙂 Mild</option>
+<option value="medium">😌 Medium</option>
+<option value="high">🔥 Spicy</option>
+</select>
+
+<label>📏 Size</label>
+<select id="size">
+<option value="s">S 🐜</option>
+<option value="m">M 🐟</option>
+<option value="l">L 🦐</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+
+<div id="result"></div>
+
+<script>
+
+const foods=[
+{name:"Raja Udang Celup Tepung", salt:"high", spicy:"high", size:"l", rating:4.8,map:"https://share.google/vjBzfNf7KqoKl8jPo"},
+{name:"Warung Pok Nong (celup tepung)", salt:"medium", spicy:"medium", size:"m", rating:4.5,map:"https://share.google/QxvfJkYw2YiDdycwE"},
+{name:"MCTS (MR Celup Tepung Station)", salt:"low", spicy:"medium", size:"s", rating:4.3,map:"https://share.google/ifc8BpKug89JfR9fu"},
+{name:"Sri Penarik Celup Tepung", salt:"high", spicy:"low", size:"m", rating:4.6,map:"https://share.google/ifc8BpKug89JfR9fu"},
+{name:"Celup Tepung Cikgu", salt:"medium", spicy:"high", size:"l", rating:4.7,map:"https://share.google/ip29Z9wHizJUo5pAx"}
+];
+
+function aiText(s,p,z){
+return `This udang goreng is recommended because it matches your ${s} saltiness, ${p} spice level, and preferred ${z} size.`;
+}
+
+function recommend(){
+
+let s=document.getElementById("salt").value;
+let p=document.getElementById("spicy").value;
+let z=document.getElementById("size").value;
+
+let results=[];
+
+for(let f of foods){
+
+let score=0;
+
+if(f.salt===s) score+=4;
+if(f.spicy===p) score+=4;
+if(f.size===z) score+=3;
+
+score+=f.rating;
+
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(s,p,z)}</p>
+<button onclick="window.open('${r.f.map}')">View Location</button>
+</div>`;
+});
+
+document.getElementById("result").innerHTML=html;
+}
+</script>
+
+</body>
+</html>
