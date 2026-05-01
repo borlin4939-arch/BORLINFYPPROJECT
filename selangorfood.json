@@ -1,0 +1,20 @@
+ [
+    {
+    "title": "Bak kut teh",
+    "description": "a popular, fragrant pork rib dish simmered for hours in a complex broth of herbs, spices, and garlic, originating from Klang, Malaysia.",
+    "link": "bakkutteh.html",
+    "img": "bakkutteh.jpg"
+  },
+   {
+    "title": "Otak-otak",
+    "description": "a popular Southeast Asian grilled or steamed fish cake, originating from Indonesia, made by mixing minced fish (usually mackerel) with coconut milk, egg, starch, and a spicy aromatic paste.",
+    "link": "otakotak.html",
+    "img": "otakotak.jpg"
+  },
+   {
+    "title": "traditional Steamed fish",
+    "description": "Traditional steamed fish, particularly the Cantonese style, is a delicate dish featuring a whole fish steamed with ginger and scallions, then drizzled with hot oil and soy sauce",
+    "link": "tsteamedfish.html",
+    "img": "ikanrebus.jpg"
+  }
+ ]

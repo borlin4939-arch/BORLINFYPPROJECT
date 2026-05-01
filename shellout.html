@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Steamed Fish AI</title>
+<style>
+body {font-family:Arial;background:#f4f4f4;padding:20px;}
+.card {background:white;padding:15px;margin-top:10px;border-radius:10px;}
+.best {border-left:5px solid green;}
+</style>
+</head>
+<body>
+
+<h1>🐟 ShellOUT</h1>
+
+<label>☪️ Halal</label>
+<select id="halal">
+<option value="yes">Halal</option>
+<option value="no">Non-Halal</option>
+</select>
+
+<label>🧂 Saltiness</label>
+<select id="salt">
+<option value="low">🙂 Low</option>
+<option value="medium">😌 Medium</option>
+<option value="high">😋 Salty</option>
+</select>
+
+<label>💰 Price</label>
+<select id="price">
+<option value="cheap">💸 Cheap</option>
+<option value="expensive">💎 Expensive</option>
+</select>
+
+<button onclick="recommend()">Recommend</button>
+<div id="result"></div>
+
+<script>
+const foods=[
+{name:"SENDUP LAGI SEKALI", halal:"yes", salt:"high", price:"cheap", rating:4.8, map:"https://share.google/aSI3g6c6jkSmghJYv"},
+{name:"KETAM LARI CINTA", halal:"yes", salt:"medium", price:"expensive", rating:4.6, map:"https://share.google/KpFZyZe1NxGQG4u1M"},
+{name:"UDANG GALAH XXL restorant", halal:"yes", salt:"low", price:"cheap", rating:4.4, map:"https://share.google/jHfAagZ5RHGKzK3FV"},
+{name:"SHELLOUT FAMOUS KUALA PERLIS", halal:"no", salt:"medium", price:"expensive", rating:4.7, map:"https://share.google/pWwjTJe2Kd1yDorRS"},
+{name:"SHELLOUT TIAP TIAP HARI", halal:"yes", salt:"high", price:"cheap", rating:4.5, map:"https://share.google/B884sxMhcZ9rsKMp1"}
+];
+
+function aiText(h,s,p){
+return `Recommended because it matches your ${s} saltiness and ${p} budget preference, ${h==="yes"?"while ensuring halal compliance.":"with broader traditional options."}`;
+}
+
+function recommend(){
+let h=halal.value, s=salt.value, p=price.value;
+let results=[];
+
+for(let f of foods){
+let score=0;
+if(f.halal===h) score+=5;
+if(f.salt===s) score+=4;
+if(f.price===p) score+=3;
+score+=f.rating;
+results.push({f,score});
+}
+
+results.sort((a,b)=>b.score-a.score);
+
+let html="<h2>🥇 Top 5</h2>";
+results.forEach((r,i)=>{
+html+=`
+<div class="card ${i==0?'best':''}">
+<h3>#${i+1} ${r.f.name}</h3>
+<p>⭐ ${r.f.rating}</p>
+<p>${aiText(h,s,p)}</p>
+<button onclick="window.open('${r.f.map}')">📍 View Location</button>
+</div>`;
+});
+result.innerHTML=html;
+}
+</script>
+
+</body>
+</html>

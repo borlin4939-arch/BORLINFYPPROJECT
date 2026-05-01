@@ -1,0 +1,39 @@
+[
+{
+    "title": "Redang experience",
+    "description": "Fell The MASSIVE Beautiful Coral",
+    "link": "redangexp.html",
+    "img":"redangexp.jpg"
+  },
+  {
+    "title": "Penang experience",
+    "description": "experience the funnest of park",
+    "link": "penangexp.html",
+    "img":"penangexp.jpg"
+  },
+  {
+    "title": "Perak Experience",
+    "description": "Experience the fun of waterpark",
+    "link": "perakexp.html",
+    "img":"perakexp.jpg"
+  },
+  {
+    "title": "KL Experience",
+    "description": "Experience the biggest pool in the World",
+    "link": "klexp.html",
+    "img":"klexp.jpg"
+  },{
+    "title": "MELAKA Experience",
+    "description": "Feel the massive of the canon of A famosa",
+    "link": "melakaexp.html",
+    "img":"melakaexp.jpg"
+  },
+  {
+    "title": "JOHOR experience",
+    "description": "Feel the mystery of the legoland",
+    "link": "johorexp.html",
+    "img":"johorexp.jpg"
+  }
+
+
+]

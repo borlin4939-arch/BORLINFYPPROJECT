@@ -1,0 +1,21 @@
+[
+    {
+    "title": "Kuih Bahulu",
+    "description": "a traditional Malay egg-based sponge cake, often described as an Asian madeleine, characterized by a crisp, golden-brown exterior and a soft, airy interior.",
+    "link": "kuihbahulu.html",
+    "img": "kuihbahulu.jpg"
+  },
+  {
+    "title": "Sotong Goreng",
+    "description": "a popular Southeast Asian dish of deep-fried squid, featuring a crispy, savory batter—often seasoned with turmeric or curry powder—encasing tender, succulent, and slightly sweet calamari rings. ",
+    "link": "sotongoreng.html",
+    "img": "sotonggoreng.jpg"
+  },
+  {
+    "title": "Udang Goreng",
+    "description": "a popular Southeast Asian dish of fried prawns, ranging from simple stir-fried or deep-fried prawns to battered and spicy variations.",
+    "link": "udanggoreng.html",
+    "img": "udanggoreng.jpg"
+  }
+
+]
